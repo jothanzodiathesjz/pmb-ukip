@@ -11,6 +11,7 @@ use App\Models\Jurusan;
 use App\Models\Others;
 use App\Models\Sekolah;
 use App\Models\Wali;
+use App\Models\Pengumuman;
 
 
 use Illuminate\Http\Request;
@@ -103,18 +104,18 @@ class UserDashboardController extends Controller
         ]);
     }
 
-    public function getBiodata()
+    public function getBiodata(Request $request)
     {
 
-        $dataBiodata = Biodata::where('id_user', Auth::user()->id)->first();
+        $dataBiodata = Biodata::where('id_user', $request->route('id'))->first();
         return response()->json([
             'data' => $dataBiodata ? $dataBiodata : null
         ]);
     }
 
-    public function getSekolah()
+    public function getSekolah(Request $request)
     {
-        $dataSekolah = Sekolah::where('id_user', Auth::user()->id)->first();
+        $dataSekolah = Sekolah::where('id_user', $request->route('id'))->first();
 
         return response()->json([
             'data' => $dataSekolah ? $dataSekolah : false
@@ -162,10 +163,10 @@ class UserDashboardController extends Controller
         ]);
     }
 
-    public function getJurusan()
+    public function getJurusan(Request $request)
     {
 
-        $dataJurusan = Jurusan::where('id_user', Auth::user()->id)->first();
+        $dataJurusan = Jurusan::where('id_user', $request->route('id'))->first();
         return response()->json([
             'data' => $dataJurusan ? $dataJurusan : null
         ]);
@@ -392,6 +393,13 @@ class UserDashboardController extends Controller
     public function getDataUsers(){
 
         $dataUsers = User::where('role', 'user')->get();
+
+    // Menyertakan data pengumuman dalam setiap objek pengguna
+    foreach ($dataUsers as $user) {
+        $pengumuman = Pengumuman::where('id_user', $user->id)->first();
+        $user->pengumuman = $pengumuman;
+    }
+
         return response()->json([
             'data' => $dataUsers
         ]);
@@ -435,5 +443,35 @@ class UserDashboardController extends Controller
 
     function dataPesertaView(){
         return view('users.data-peserta');
+    }
+
+    function createPengumuman(Request $request){
+        try {
+            $pengumuman = Pengumuman::firstOrNew(['id_user' => $request->id_user]);
+
+        // Jika data sudah ada, lakukan update
+        if ($pengumuman->exists) {
+            $pengumuman->pengumuman = $request->pengumuman;
+            $pengumuman->save();
+            return response()->json([
+                'message' => "success update"
+            ]);
+        } else {
+            // Jika data belum ada, lakukan create
+            Pengumuman::create([
+                'id_user' => $request->id_user,
+                'pengumuman' => $request->pengumuman
+            ]);
+            return response()->json([
+                'message' => "success create"
+            ]);
+        }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th
+            ]);
+        }
+
+        
     }
 }

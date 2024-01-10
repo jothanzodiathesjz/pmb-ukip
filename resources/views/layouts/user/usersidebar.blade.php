@@ -44,6 +44,12 @@
                         data-i18n="Calendar">Data Peserta</span></a>
             </li>
             @endif
+            @if (Auth::user()->role['role'] === 'pimpinan')
+            <li class=" nav-item  {{(Request::segment(2) === 'peserta') ? 'active' : ''}}"><a class="d-flex align-items-center" href="{{route('dashboard.peserta')}}"><i
+                data-feather="person"></i><span class="menu-title text-truncate"
+                data-i18n="Calendar">Data Peserta</span></a>
+            </li>
+            @endif
         </ul>
     </div>
 </div>

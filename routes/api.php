@@ -28,8 +28,15 @@ Route::put('/dashboard/akun/others', [UserDashboardController::class, 'updateOth
 
 Route::post('/berkas', [UserDashboardController::class, 'createBerkas']);
 Route::get('/berkas/{id}', [UserDashboardController::class, 'getBerkas']);
-
+Route::get('/dashboard/akun/{id}/biodata', [UserDashboardController::class, 'getBiodata']);
+Route::get('/dashboard/akun/{id}/sekolah', [UserDashboardController::class, 'getSekolah']);
+Route::get('/dashboard/akun/{id}/jurusan', [UserDashboardController::class, 'getJurusan']);
+Route::get('/dashboard/akun/{id}/others', [UserDashboardController::class, 'getOthers']);
+Route::get('/dashboard/akun/{id}/berkas', [UserDashboardController::class, 'getBerkas']);
+Route::post('/dashboard/akun/{id}/pengumuman', [UserDashboardController::class, 'createPengumuman']);
 Route::post('/admin/store', [UserController::class, 'createAdmin']);
+Route::post('/pimpinan/store', [UserController::class, 'createPimpinan']);
 
 Route::get('/admin/users',[UserDashboardController::class, 'getDataUsers']);
 Route::delete('/admin/users/{id}',[UserDashboardController::class, 'deleteUsers']);
+

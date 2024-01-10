@@ -50,6 +50,26 @@ class UserController extends Controller
         // with message?
         return response()->json(['message' => 'User created successfully!'], 201);
     }
+    public function createPimpinan(Request $request)
+    {
+        $req = $this->validate($request, [
+            'name' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'email' => 'required',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+            'email' => $request->email,
+            'role' => 'pimpinan',
+        ]);
+
+        // with message?
+        return response()->json(['message' => 'User created successfully!'], 201);
+    }
 
     public function login(Request $request)
     {
@@ -66,6 +86,9 @@ class UserController extends Controller
 
             if(Auth::user()->role['role'] == 'admin'){
                 return redirect()->intended('dashboard/users/'.$id->getAuthIdentifier());
+            }
+            if(Auth::user()->role['role'] == 'pimpinan'){
+                return redirect()->intended('dashboard/peserta');
             }
             return redirect()->intended('dashboard/akun/' . $id->getAuthIdentifier());
         }
