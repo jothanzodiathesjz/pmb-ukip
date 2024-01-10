@@ -33,6 +33,7 @@ Route::get('/dashboard/akun/{id}/sekolah', [UserDashboardController::class, 'get
 Route::get('/dashboard/akun/{id}/jurusan', [UserDashboardController::class, 'getJurusan']);
 Route::get('/dashboard/akun/{id}/others', [UserDashboardController::class, 'getOthers']);
 Route::get('/dashboard/akun/{id}/berkas', [UserDashboardController::class, 'getBerkas']);
+Route::get('/dashboard/akun/{id}/pengumuman', [UserDashboardController::class, 'getDataPengumuman']);
 Route::post('/dashboard/akun/{id}/pengumuman', [UserDashboardController::class, 'createPengumuman']);
 Route::post('/admin/store', [UserController::class, 'createAdmin']);
 Route::post('/pimpinan/store', [UserController::class, 'createPimpinan']);

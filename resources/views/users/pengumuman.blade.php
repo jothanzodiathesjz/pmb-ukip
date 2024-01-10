@@ -26,12 +26,8 @@
         <div class="content-body">
             <div class="col-md-6 col-xl-12">
                 <div class="card bg-secondary text-white mb-3">
-                  <div class="card-header">Selamat</div>
                   <div class="card-body">
-                    <h5 class="card-title text-white">Secondary card title</h5>
-                    <p class="card-text">
-                      Some quick example text to build on the card title and make up.
-                    </p>
+                    <h5 class="card-title text-white" id="pengumuman">Secondary card title</h5>
                   </div>
                 </div>
               </div>
@@ -42,7 +38,17 @@
 <!-- END: Content-->
 
 <script>
-
+fetch('/api/dashboard/akun/{{ Auth::user()->id}}/pengumuman')
+.then((res) => res.json())
+.then((json) => {
+    if(json.data?.pengumuman === "true"){
+        $('#pengumuman').text('Selamat anda lulus');
+    }else if(json.data?.pengumuman === "true"){
+        $('#pengumuman').text('Mohon maaf anda tidak lulus');
+    }else{
+        $('#pengumuman').text('Menunggu Persetujuan');
+    }
+})
 </script>
 
 @endsection

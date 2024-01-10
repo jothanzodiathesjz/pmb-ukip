@@ -378,6 +378,7 @@ class UserDashboardController extends Controller
 
     function pengumumanView()
     {
+       
         return view('users.pengumuman');
     }
     public function viewAkun()
@@ -473,5 +474,14 @@ class UserDashboardController extends Controller
         }
 
         
+    }
+
+    function getDataPengumuman(Request $request)
+    {
+        $dataPengumuman = Pengumuman::where('id_user', $request->route('id'))->first();
+        return response()->json([
+            'data' => $dataPengumuman
+        ]);
+
     }
 }
