@@ -97,9 +97,33 @@
         const raport = document.getElementById('raport');
         const sertifikat = document.getElementById('sertifikat');
         const bukti = document.getElementById('bukti_pembayaran');
+        function validateFileSize(fileInput, maxSizeInBytes) {
+            const fileSize = fileInput.files[0].size;
+            const maxSizeInMB = maxSizeInBytes / (1024 * 1024);
+        
+            if (fileSize > maxSizeInBytes) {
+                Swal.fire({
+                    title: "Error!",
+                    text: `File size exceeds the maximum limit of ${maxSizeInMB} MB.`,
+                    icon: "error"
+                });
+                return false;
+            }
+        
+            return true;
+        }
     function postData() {
         
-
+        const maxFileSize = 2 * 1024 * 1024; // Contoh: 2 MB
+        if (!validateFileSize(ktp, maxFileSize) ||
+        !validateFileSize(kk, maxFileSize) ||
+        !validateFileSize(ijasah, maxFileSize) ||
+        !validateFileSize(skl, maxFileSize) ||
+        !validateFileSize(raport, maxFileSize) ||
+        !validateFileSize(sertifikat, maxFileSize) ||
+        !validateFileSize(bukti, maxFileSize)) {
+        return; // Hentikan proses jika ada file yang melanggar batas ukuran
+    }
         const formData = new FormData();
         formData.append('ktp', ktp.files[0]);
         formData.append('kk', kk.files[0]);
